@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/selfSearchBox"
+        android:textSize="18sp"
+        android:hint="搜索股票"
+        android:drawableStart="@drawable/search_layer"
+        android:background="@drawable/self_search_shape"
+        android:paddingStart="9dp"
+        android:layout_marginStart="18dp"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="28dp"/>
+    <ImageView
+        android:src="@drawable/settings_pic"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"/>
+    <ImageView
+        android:src="@drawable/message_pic"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="15dp"
+        android:layout_gravity="center"
+        android:layout_width="20dp"
+        android:layout_height="20dp"/>
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selfContainer"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.self.SelfSelectFragment">
+    <include layout="@layout/self_title"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/selfTabLayout"
+            android:background="@color/white"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="#F88C3A"
+            app:tabIndicatorHeight="5dp"
+            app:tabRippleColor="@android:color/transparent"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="32dp"/>
+        <ImageView
+            android:src="@drawable/more_menu_pic"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+    </LinearLayout>
+    <include layout="@layout/self_select_sub_title"/>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/selfViewPager"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+</LinearLayout>

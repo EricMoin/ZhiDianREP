@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="首页"
+        android:icon="@drawable/home_selector"
+        />
+    <item
+        android:id="@+id/selfSelect"
+        android:title="自选"
+        android:icon="@drawable/self_select_selector"
+        />
+    <item
+        android:id="@+id/ground"
+        android:title="广场"
+        android:icon="@drawable/ground_selector"
+        />
+    <item
+        android:id="@+id/chase"
+        android:title="交易"
+        android:icon="@drawable/chase_selector"
+        />
+    <item
+        android:id="@+id/user"
+        android:title="我的"
+        android:icon="@drawable/user_selector"
+        />
+</menu>
