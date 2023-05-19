@@ -30,7 +30,7 @@
             android:layout_height="match_parent"/>
         <ImageView
             android:id="@+id/searchDelHistoryBtn"
-            android:src="@drawable/delete_pic"
+            android:src="@drawable/history_delete_all_pic"
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:layout_width="20dp"

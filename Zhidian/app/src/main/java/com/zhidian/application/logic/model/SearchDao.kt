@@ -8,6 +8,8 @@ import com.zhidian.application.ui.ZhidianApplication
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import kotlin.random.Random
+
 object SearchDao {
     private val historyList = ArrayList<StockItem>()
     private val path = ZhidianApplication.context.filesDir.absolutePath+ File.separator
@@ -18,12 +20,12 @@ object SearchDao {
     private fun makeHistory() {
         historyList.add(
             StockItem(
-                name = "长安汽车",
-                id = "300274",
+                name = Random.nextInt().toString(),
+                id = Random.nextInt().toString(),
                 icon = " 创 ",
                 label = "",
-                newestPrice = "306.80",
-                planPrice = "306.80",
+                newestPrice = Random.nextInt().toString(),
+                planPrice = Random.nextInt().toString(),
                 range = "-5.20%",
                 hasFocused = false,
                 from = "600519.SZ"
@@ -31,28 +33,15 @@ object SearchDao {
         )
         historyList.add(
             StockItem(
-                name = "阳光电源",
-                id = "300274",
+                name = Random.nextInt().toString(),
+                id = Random.nextInt().toString(),
                 icon = " 创 ",
                 label = "",
-                newestPrice = "999.80",
-                planPrice = "306.80",
+                newestPrice = Random.nextInt().toString(),
+                planPrice = Random.nextInt().toString(),
                 range = "+5.20%",
                 hasFocused = true,
                 from = "600519.SH"
-            )
-        )
-        historyList.add(
-            StockItem(
-                name = "伊利股份",
-                id = "300274",
-                icon = " 创 ",
-                label = "",
-                newestPrice = "1200.80",
-                planPrice = "306.80",
-                range = "+5.60%",
-                hasFocused = true,
-                from = "600519.SZ"
             )
         )
     }

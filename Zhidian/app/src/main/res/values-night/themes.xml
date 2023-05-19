@@ -1,16 +1,56 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Zhidian" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Zhidian" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryVariant">@android:color/transparent</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.BottomNavigationView.Active.Appearance" parent="Theme.Zhidian">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="Theme.BottomNavigationView.Inactive.Appearance" parent="Theme.Zhidian">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Theme.Zhidian.Btom.TabLayout" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/Theme.Zhidian.Btom.TabText</item>
+        <item name="tabBackground">@android:color/white</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabSelectedTextColor">@color/black</item>
+        <item name="tabIndicatorHeight">5dp</item>
+        <item name="tabIndicatorColor">#EE883C</item>
+    </style>
+
+    <style name="Theme.Zhidian.Btom.TabText" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Theme.Zhidian.Btom.TabText.Default" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="BottomDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 </resources>

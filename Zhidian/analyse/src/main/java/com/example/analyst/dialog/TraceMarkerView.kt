@@ -29,13 +29,13 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 
 class TraceMarkerView(context:Context,layoutResource:Int) :MarkerView(context,layoutResource) {
-    override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        super.refreshContent(e, highlight)
+    override fun refreshContent(entry: Entry?, highlight: Highlight?) {
+        super.refreshContent(entry, highlight)
         val markerOpen = findViewById<TextView>(R.id.markerOpen)
         val markerClose = findViewById<TextView>(R.id.markerClose)
         val markerHighest = findViewById<TextView>(R.id.markerHighest)
         val markerLowest = findViewById<TextView>(R.id.markerLowest)
-        val data = (e as CandleEntry)
+        val data = (entry as CandleEntry)
         markerOpen.text = data.open.toString()
         markerClose.text = data.close.toString()
         markerHighest.text = data.high.toString()

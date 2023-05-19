@@ -34,7 +34,8 @@
         app:tabIndicator="@drawable/tab_indicator"
         app:tabSelectedTextColor="@color/black"
         app:tabIndicatorHeight="5dp"
-        app:tabIndicatorColor="#EE883C"/>
+        app:tabIndicatorColor="#EE883C"
+        />
     <View
         android:background="@drawable/divider"
         android:layout_width="match_parent"

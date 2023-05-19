@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/btom_chart_shape"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/chartTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        app:tabMode="auto"
+        app:tabTextAppearance="@style/Theme.Zhidian.Btom.TabText.Default"
+        app:tabSelectedTextAppearance="@style/Theme.Zhidian.Btom.TabText"
+        app:tabBackground="@android:color/white"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabIndicator="@drawable/btom_tab_indicator"
+        app:tabSelectedTextColor="@color/black"
+        app:tabIndicatorHeight="4dp"
+        app:tabIndicatorColor="#EE883C"
+        />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/btomViewPager"
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        />
+</LinearLayout>

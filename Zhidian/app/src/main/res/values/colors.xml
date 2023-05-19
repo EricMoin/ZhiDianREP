@@ -12,5 +12,6 @@
     <color name="label_blue" >#02A7F0</color>
     <color name="label_red" >#D6011E</color>
     <color name="data_red" >#E24141</color>
+    <color name="transparent">#00000000</color>
     <color name="label_grey" >#727272</color>
 </resources>

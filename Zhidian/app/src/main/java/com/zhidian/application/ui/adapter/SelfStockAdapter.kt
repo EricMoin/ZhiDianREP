@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stock.StockActivity
 import com.zhidian.application.R
 import com.zhidian.application.logic.data.StockItem
-import com.zhidian.application.ui.self.SelfSelectFragment
 
 class SelfStockAdapter(val fragment: Fragment, val itemList:List<StockItem>): RecyclerView.Adapter<SelfStockAdapter.ViewHolder>() {
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

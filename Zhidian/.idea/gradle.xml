@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/notes" />
             <option value="$PROJECT_DIR$/stock" />
+            <option value="$PROJECT_DIR$/stockmanager" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -8,6 +8,6 @@ data class StockItem(
     val newestPrice:String,
     val planPrice:String,
     val range:String,
-    val hasFocused:Boolean,
+    var hasFocused:Boolean,
     val from:String
 )

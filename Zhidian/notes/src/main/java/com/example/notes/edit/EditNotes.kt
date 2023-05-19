@@ -67,7 +67,6 @@ class EditNotes : AppCompatActivity() {
         val notesEditorManager = findViewById<RichEditorManager>(R.id.notesEditorManager)
         val listener = object :OnHyperEditListener{
             override fun onImageClick(view: View, imagePath: String) {
-
                 Log.d("EditNotes","????")
             }
             override fun onRtImageDelete(imagePath: String?) {
