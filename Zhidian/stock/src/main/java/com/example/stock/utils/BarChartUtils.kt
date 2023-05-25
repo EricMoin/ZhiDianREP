@@ -30,7 +30,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 
 
-class BarChartUtils(val context: Context, val chart: BarChart) {
+class BarChartUtils(val context: Context, val chart: BarChart,val code:String) {
     /**
      * 初始化Chart
      */

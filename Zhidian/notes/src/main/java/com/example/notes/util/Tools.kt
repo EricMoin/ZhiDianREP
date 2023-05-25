@@ -38,7 +38,7 @@ object Tools {
     const val SORT = 0
     const val SORT_REVERSE = 1
     const val ZERO = "0"
-    public fun toExpressTime(time: TimeCard) :String {
+    fun toExpressTime(time: TimeCard) :String {
         val defaultDateBuilder = StringBuilder()
         defaultDateBuilder
             .append(time.notesYear)
@@ -129,7 +129,5 @@ object Tools {
         }
         return list
     }
-    fun hideKeyboard(activity: Activity){
-        HyperLibUtils.hideSoftInput(activity)
-    }
+    fun hideKeyboard(activity: Activity) = HyperLibUtils.hideSoftInput(activity)
 }

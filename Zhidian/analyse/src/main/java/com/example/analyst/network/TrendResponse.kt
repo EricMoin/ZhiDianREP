@@ -28,7 +28,7 @@ data class TrendResponse(
     val points:Point,
     val status:Int
     ){
-    data class Point(val min1:Int,val min2:Int,val max1:Int,val max2:Int)
+    data class Point(val min2:Int,val min1:Int,val max2:Int,val max1:Int)
     data class KLineData(
         val volume:String,
         val deal:String,

@@ -18,8 +18,7 @@ class RankStockAdapter(val activity: FragmentActivity, val itemList:List<StockIt
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rank_item, parent, false)
-        val holder = ViewHolder(view)
-        return holder
+        return ViewHolder(view)
     }
     override fun getItemCount() = itemList.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -1,5 +1,6 @@
 package com.zhidian.application.logic.model
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
@@ -13,15 +14,16 @@ import kotlin.random.Random
 object SearchDao {
     private val historyList = ArrayList<StockItem>()
     private val path = ZhidianApplication.context.filesDir.absolutePath+ File.separator
+    const val JSON  =".json"
+    const val HISTORY = "[HISTORY]"
     init {
-        makeHistory()
+//        makeHistory()
     }
-
     private fun makeHistory() {
         historyList.add(
             StockItem(
                 name = Random.nextInt().toString(),
-                id = Random.nextInt().toString(),
+                code = Random.nextInt().toString(),
                 icon = " 创 ",
                 label = "",
                 newestPrice = Random.nextInt().toString(),
@@ -34,7 +36,7 @@ object SearchDao {
         historyList.add(
             StockItem(
                 name = Random.nextInt().toString(),
-                id = Random.nextInt().toString(),
+                code = Random.nextInt().toString(),
                 icon = " 创 ",
                 label = "",
                 newestPrice = Random.nextInt().toString(),
@@ -45,24 +47,32 @@ object SearchDao {
             )
         )
     }
-    fun saveHistory(list:List<StockItem>){
-        val fw = FileWriter(path)
-        GsonBuilder().setPrettyPrinting().create().toJson(list,fw)
+    fun saveHistory(stock:StockItem){
+        val fw = FileWriter(path+HISTORY+"${stock.code}")
+        GsonBuilder().setPrettyPrinting().create().toJson(stock,fw)
         fw.flush()
         fw.close()
-        historyList.clear()
-        historyList.addAll(list)
+        historyList.add(stock)
     }
     fun loadHistory(){
         historyList.clear()
         val dir = File(path)
         for(file in dir.listFiles()){
-            if (file.name.contains(".json")){
+            if (file.name.contains(HISTORY)){
                 val fr = FileReader(file)
-                val reader = JsonReader(fr)
-                historyList.addAll(GsonBuilder().create().fromJson< ArrayList<StockItem> >(reader,object :TypeToken< ArrayList<StockItem> >() {}.type))
-                reader.close()
+                historyList.add(Gson().fromJson(fr,StockItem::class.java))
                 fr.close()
+            }
+        }
+    }
+    fun removeHistory(stock: StockItem){
+        for(position in historyList.indices){
+            if (historyList[position].code == stock.code) historyList.removeAt(position)
+        }
+        val dir = File(path)
+        for (file in dir.listFiles()){
+            if(file.name.contains(stock.code)&&file.name.contains(HISTORY)){
+                file.delete()
             }
         }
     }

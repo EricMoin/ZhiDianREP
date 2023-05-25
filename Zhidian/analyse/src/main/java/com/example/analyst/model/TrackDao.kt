@@ -28,7 +28,10 @@ object TrackDao {
     init{
         makeData()
     }
-
+    private var path = ""
+    fun setLocalPath(str:String){
+        path = str
+    }
     private fun makeData() {
         analystList.add(
             AnalystCard(

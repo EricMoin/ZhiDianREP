@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zhidian.application.R
 import com.zhidian.application.ui.adapter.SearchStockAdapter
 import com.zhidian.application.ui.adapter.RankStockAdapter
+import java.io.File
 
 class SearchActivity : AppCompatActivity() {
     val viewModel by lazy{ ViewModelProvider(this)[SearchViewModel::class.java] }
@@ -46,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
                 searchRankContainer.visibility = GONE
                 searchHistoryContainer.visibility = GONE
                 searchRecycler.visibility = VISIBLE
-                viewModel.getSearch(it.toString())
+                viewModel.getSearch(it.toString(),filesDir.absolutePath+File.separator)
             }else{
                 searchRankContainer.visibility = VISIBLE
                 searchHistoryContainer.visibility = VISIBLE
@@ -75,12 +76,23 @@ class SearchActivity : AppCompatActivity() {
             stockDelAll.visibility = VISIBLE
             stockFinish.visibility = VISIBLE
             searchDelHistoryBtn.visibility = GONE
+            historyAdapter.deletable = true
+            historyAdapter.notifyDataSetChanged()
         }
         stockFinish.setOnClickListener {
             stockDelAll.visibility = GONE
             stockFinish.visibility = GONE
             searchRecycler.visibility = GONE
             searchDelHistoryBtn.visibility = VISIBLE
+            historyAdapter.deletable = false
+            historyAdapter.notifyDataSetChanged()
+        }
+        stockDelAll.setOnClickListener {
+            for(stock in viewModel.historyList){
+                viewModel.removeHistory(stock)
+            }
+            viewModel.historyList.clear()
+            historyAdapter.notifyDataSetChanged()
         }
     }
     private fun initHistory() {

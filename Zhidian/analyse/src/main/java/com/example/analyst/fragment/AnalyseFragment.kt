@@ -23,14 +23,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.analyst.R
 import com.example.analyst.adapter.ViewPage2Adapter
+import com.example.analyst.card.TimeCard
 import com.example.analyst.model.AnalystManager
 import com.example.analyst.util.CandleStickChartUtils
+import com.example.analyst.util.Tools
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.data.CandleEntry
 import com.google.android.material.tabs.TabLayout
@@ -40,8 +43,8 @@ class AnalyseFragment : Fragment() {
 
     companion object {
         fun newInstance() = AnalyseFragment()
+        const val CODE = "[CODE]"
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,15 +53,25 @@ class AnalyseFragment : Fragment() {
     }
     private lateinit var mainView: View
     private lateinit var mainActivity: Activity
+    private lateinit var code:String
     private val textList = listOf("分析师","投资高手","好友")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        code = activity?.intent?.getStringExtra(CODE)?:""
         mainView = view
         mainActivity = requireActivity()
+        initHeader()
         initTrendButton()
         initHeaderChart()
         initTracker()
     }
+
+    private fun initHeader() {
+        val time = Tools.getTimeCard()
+        val analyseLastUpdateTime = mainView.findViewById<TextView>(R.id.analyseLastUpdateTime)
+        analyseLastUpdateTime.text = Tools.toExpressTime(time)
+    }
+
     private fun initTracker() {
         val analyseTrackContainer = mainView.findViewById<LinearLayout>(R.id.analyseTrackContainer)
         val masterTrack = LayoutInflater.from(mainActivity).inflate(R.layout.analyse_master_track,analyseTrackContainer,false)
@@ -71,8 +84,8 @@ class AnalyseFragment : Fragment() {
     }
 
     private fun initTrendButton() {
-        val analyseShortTrendBtn = mainView.findViewById<Button>(R.id.analyseShortTrendBtn)
-        val analyseMiddleTrendBtn = mainView.findViewById<Button>(R.id.analyseMiddleTrendBtn)
+        val analyseShortTrendBtn = mainView.findViewById<TextView>(R.id.analyseShortTrendBtn)
+        val analyseMiddleTrendBtn = mainView.findViewById<TextView>(R.id.analyseMiddleTrendBtn)
         analyseShortTrendBtn.setOnClickListener {
             analyseShortTrendBtn.setTextColor(Color.rgb(248,140,58))
             analyseMiddleTrendBtn.setTextColor(Color.BLACK)
@@ -89,30 +102,8 @@ class AnalyseFragment : Fragment() {
 
     private fun initHeaderChart() {
         val analyseHeaderChart = mainView.findViewById<CandleStickChart>(R.id.analyseHeaderChart)
-        val entries = ArrayList<CandleEntry>()
-        val chartSettings = CandleStickChartUtils(mainActivity,analyseHeaderChart,R.layout.chart_marker_view)
-        for (i in 0 until 20) {
-            val multi: Float = (10 + 1).toFloat()
-            val `val` = (Math.random() * 40).toFloat() + multi
-            val high = (Math.random() * 9).toFloat() + 8f
-            val low = (Math.random() * 9).toFloat() + 8f
-            val open = (Math.random() * 6).toFloat() + 1f
-            val close = (Math.random() * 6).toFloat() + 1f
-            val even = i % 2 == 0
-           entries.add(
-                CandleEntry(
-                    i.toFloat(), `val` + high,
-                    `val` - low,
-                    if (even) `val` + open else `val` - open,
-                    if (even) `val` - close else `val` + close,
-                )
-            )
-        }
-        chartSettings.initSetting()
-        chartSettings.setCandleStickData(entries)
-        analyseHeaderChart.invalidate()
+        CandleStickChartUtils(requireActivity(),code,analyseHeaderChart).initSetting()
     }
-
     private fun initTrackerView(view:View,title:String) {
         val analyseTrackTitle = view.findViewById<TextView>(R.id.analyseTrackTitle)
         analyseTrackTitle.text = title
@@ -122,13 +113,12 @@ class AnalyseFragment : Fragment() {
             val fragment = TrackFragment.newInstance()
             val bundle = Bundle()
             bundle.putString(TrackFragment.LABEL,labelList[i])
-            fragment.arguments =  bundle
+            fragment.arguments = bundle
             fragmentList.add(fragment)
         }
         val analyseTrackTabLayout = view.findViewById<TabLayout>(R.id.analyseTrackTabLayout)
         val analyseTrackViewPager = view.findViewById<ViewPager2>(R.id.analyseTrackViewPager)
         analyseTrackViewPager.adapter = ViewPage2Adapter(childFragmentManager,lifecycle,fragmentList)
-        analyseTrackViewPager.offscreenPageLimit
         val mediator = TabLayoutMediator(analyseTrackTabLayout,analyseTrackViewPager,true,true){
             tab: TabLayout.Tab, i: Int ->
             tab.text = textList[i]

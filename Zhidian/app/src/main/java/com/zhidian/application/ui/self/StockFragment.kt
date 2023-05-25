@@ -18,10 +18,12 @@ import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zhidian.application.R
+import com.zhidian.application.logic.utils.Tools
 import com.zhidian.application.ui.adapter.SelfStockAdapter
 import com.zhidian.application.ui.dialog.BottomChartDialog
 
@@ -29,11 +31,14 @@ class StockFragment : Fragment() {
 
     companion object {
         fun newInstance() = StockFragment()
+        const val DEFAULT = 0
+        const val SELECTED = 1
     }
-
     val viewModel by lazy { ViewModelProvider(this)[StockViewModel::class.java] }
     private lateinit var mainView:View
     private lateinit var adapter:SelfStockAdapter
+    private var priceStatus = DEFAULT
+    private var rangeStatus = DEFAULT
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,10 +49,45 @@ class StockFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData(requireActivity().filesDir.absolutePath)
         initBottomDialog()
         initRecyclerView()
+        initSubTitle()
     }
-
+    private fun initSubTitle() {
+        val priceSubUp = mainView.findViewById<ImageView>(R.id.priceSubUp)
+        val priceSubDown = mainView.findViewById<ImageView>(R.id.priceSubDown)
+        val rangeSubUp = mainView.findViewById<ImageView>(R.id.rangeSubUp)
+        val rangeSubDown = mainView.findViewById<ImageView>(R.id.rangeSubDown)
+        val priceSubText = mainView.findViewById<TextView>(R.id.priceSubText)
+        val rangeSubText = mainView.findViewById<TextView>(R.id.rangeSubText)
+        val default = ColorStateList.valueOf(resources.getColor(R.color.label_grey))
+        val selected = ColorStateList.valueOf(resources.getColor(R.color.orange))
+        priceSubText.setOnClickListener {
+            rangeSubUp.imageTintList = default
+            rangeSubDown.imageTintList = default
+            rangeStatus = DEFAULT
+            rangeSubText.setTextColor(default)
+            priceSubUp.imageTintList = if (priceStatus == DEFAULT) selected else default
+            priceSubDown.imageTintList = if(priceStatus == DEFAULT) default else selected
+            priceSubText.setTextColor(selected)
+            Tools.sortByPrice(viewModel.stockList,priceStatus)
+            priceStatus = priceStatus xor SELECTED
+            adapter.notifyDataSetChanged()
+        }
+        rangeSubText.setOnClickListener {
+            priceSubUp.imageTintList = default
+            priceSubDown.imageTintList = default
+            priceStatus = DEFAULT
+            priceSubText.setTextColor(default)
+            rangeSubUp.imageTintList = if (rangeStatus == DEFAULT) selected else default
+            rangeSubDown.imageTintList = if (rangeStatus == DEFAULT) default else selected
+            rangeSubText.setTextColor(selected)
+            Tools.sortByChg(viewModel.stockList,rangeStatus)
+            rangeStatus = rangeStatus xor SELECTED
+            adapter.notifyDataSetChanged()
+        }
+    }
     private fun initBottomDialog() {
         val panelBtn = mainView.findViewById<ImageView>(R.id.panelBtn)
         panelBtn.setOnClickListener {

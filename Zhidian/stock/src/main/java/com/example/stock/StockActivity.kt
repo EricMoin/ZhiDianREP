@@ -17,6 +17,7 @@
 package com.example.stock
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity.CENTER
@@ -24,6 +25,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -34,15 +37,23 @@ import com.example.stock.adapter.StockCardAdapter
 import com.example.stock.card.StockDataCard
 import com.example.stock.fragment.NullFragment
 import com.example.stock.fragment.TimeChartFragment
+import com.example.stock.model.StockActivityViewModel
 import com.example.stock.utils.StockDataHelper
 import com.example.stock.utils.Tools
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import java.io.File
 
 class StockActivity : AppCompatActivity() {
+    companion object{
+        const val CODE = "[CODE]"
+        const val MAX_LIMITED_PAGES = 7
+    }
+    val viewModel by lazy { ViewModelProvider(this)[StockActivityViewModel::class.java] }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock)
+        DaoRegister.registerPath(this)
         initStockDataPanel()
         addStockData()
         initTimeChartPanel()
@@ -56,7 +67,6 @@ class StockActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     private fun initTimeChartPanel() {
         val textList = listOf("分时","五日","日K","周K","月K","季K","年K","更多")
         val fragmentList = ArrayList<Fragment>()
@@ -76,7 +86,6 @@ class StockActivity : AppCompatActivity() {
     }
     private fun initInformationPanel() {
         val textList = listOf("资讯","走势","估值","资金","分析","扫雷","研报")
-        val textViewList = ArrayList<TextView>()
         val fragmentList = ArrayList<Fragment>()
         fragmentList.add( NullFragment.newInstance() )
         fragmentList.add( AnalyseFragment.newInstance() )
@@ -88,28 +97,46 @@ class StockActivity : AppCompatActivity() {
         val stockInfoViewPager = findViewById<ViewPager2>(R.id.stockInfoViewPager)
         stockInfoViewPager.adapter = ViewPage2Adapter(supportFragmentManager,lifecycle,fragmentList)
         stockInfoViewPager.isUserInputEnabled = false
-
         Tools.updateViewPager2(stockInfoViewPager,fragmentList)
         val mediator = TabLayoutMediator(stockInfoTabLayout,stockInfoViewPager,false,true){
                 tab: TabLayout.Tab, i: Int ->
             tab.text = textList[i]
         }
         mediator.attach()
-        stockInfoViewPager.offscreenPageLimit = 7
     }
-    private val stockDataCardList = ArrayList<StockDataCard>()
     private lateinit var adapter : StockCardAdapter
     private fun addStockData() {
-        for(str in StockDataHelper.labels){
-            stockDataCardList.add( StockDataCard(str,"66") )
-        }
-        adapter.notifyItemRangeInserted(0,stockDataCardList.size)
+        val path = filesDir.absolutePath
+        val code = intent.getStringExtra(CODE)?:""
+        viewModel.getStock(code,path)
+        viewModel.loadStockCard()
+        adapter.notifyItemRangeInserted(0,viewModel.stockCardList.size)
     }
     private fun initStockDataPanel() {
+        viewModel.stockLiveData.observe(
+            this, Observer {
+                result ->
+                val green = resources.getColor(R.color.label_green)
+                val red = resources.getColor(R.color.label_red)
+                val quote = result.chase.data.quote
+                val priceText = findViewById<TextView>(R.id.priceText)
+                priceText.text = String.format("%.2f",quote.current.toFloat())
+                val chgText = findViewById<TextView>(R.id.chgText)
+                chgText.text = String.format("%.2f",quote.chg.toFloat())
+                val chgRatioText = findViewById<TextView>(R.id.chgRatioText)
+                chgRatioText.text = String.format("%.2f",(quote.current-quote.last_close)/quote.last_close)+"%"
+                val color = if(chgRatioText.text.contains("-")) green else red
+                val stockIconText = findViewById<TextView>(R.id.stockIconText)
+                stockIconText.text = result.chase.data.tags[0].description
+                priceText.setTextColor(color)
+                chgText.setTextColor(color)
+                chgRatioText.setTextColor(color)
+            }
+        )
         val stockDataRecyclerView = findViewById<RecyclerView>(R.id.stockDataRecyclerView)
         val layoutManager = GridLayoutManager(this,3)
         stockDataRecyclerView.layoutManager = layoutManager
-        adapter = StockCardAdapter(this,stockDataCardList)
+        adapter = StockCardAdapter(this,viewModel.stockCardList)
         stockDataRecyclerView.adapter = adapter
     }
 }

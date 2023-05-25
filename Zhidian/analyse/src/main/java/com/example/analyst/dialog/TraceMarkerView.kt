@@ -19,9 +19,9 @@ package com.example.analyst.dialog
 import android.content.Context
 import android.util.Log
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import com.example.analyst.R
-import com.example.analyst.util.CandleStickChartUtils
+import com.example.analyst.card.TimeCard
+import com.example.analyst.util.Tools
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
@@ -35,11 +35,21 @@ class TraceMarkerView(context:Context,layoutResource:Int) :MarkerView(context,la
         val markerClose = findViewById<TextView>(R.id.markerClose)
         val markerHighest = findViewById<TextView>(R.id.markerHighest)
         val markerLowest = findViewById<TextView>(R.id.markerLowest)
+        val markerDate = findViewById<TextView>(R.id.markerDate)
         val data = (entry as CandleEntry)
         markerOpen.text = data.open.toString()
         markerClose.text = data.close.toString()
         markerHighest.text = data.high.toString()
         markerLowest.text = data.low.toString()
+        val time = Tools.getTimeCard()
+        val date = StringBuilder()
+            .append(time.notesYear)
+            .append(TimeCard.HYPHEN)
+            .append(time.notesMonth)
+            .append(TimeCard.HYPHEN)
+            .append(time.notesDay)
+            .toString()
+        markerDate.text = date
     }
     override fun getOffset(): MPPointF {
         return MPPointF((-width/2).toFloat(), (height/2).toFloat())

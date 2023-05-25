@@ -31,16 +31,17 @@ import java.util.Random
 
 object NotesDataManager {
     var path = ""
+    const val NOTES = "[NOTES]"
+    const val JSON = ".json"
     private val notesDataList = ArrayList<NotesData>()
     lateinit var currentNotesData:NotesData
     fun loadDataFromLocal(){
         notesDataList.clear()
         val dir = File(path)
         if(dir.listFiles() == null) return
-        Log.d("NotesDataManager","Local exist!!!")
         for(file in dir.listFiles()){
             Log.d("NotesDataManager","${file.name}")
-            if(file.name.contains(".json")){
+            if(file.name.contains(NOTES)){
                 val fr = FileReader(file)
                 val notesData = Gson().fromJson(fr,NotesData::class.java)
                 fr.close()
@@ -92,12 +93,7 @@ object NotesDataManager {
     }
     fun writeData(){
         val notesData = currentNotesData
-        val filePath = StringBuilder()
-            .append(path)
-            .append(notesData.label)
-            .append(".json")
-            .toString()
-        val fw = FileWriter(File(filePath))
+        val fw = FileWriter(File(getFilePath(notesData.label)))
         GsonBuilder()
             .setPrettyPrinting()
             .create()
@@ -106,12 +102,7 @@ object NotesDataManager {
         fw.close()
     }
     fun deleteNotesData(label:String) {
-        val filePath = StringBuilder()
-            .append(path)
-            .append(label)
-            .append(".json")
-            .toString()
-        val file = File(filePath)
+        val file = File(getFilePath(label))
         if( file.exists() ) file.delete()
         val position = getPositionByLabel(label)
         notesDataList.removeAt(position)
@@ -124,5 +115,14 @@ object NotesDataManager {
             }
         }
         return list
+    }
+    fun getFilePath(label:String):String{
+        val filePath = StringBuilder()
+            .append(path)
+            .append(NOTES)
+            .append(label)
+            .append(JSON)
+            .toString()
+        return filePath
     }
 }

@@ -12,11 +12,14 @@ import com.zhidian.application.ui.adapter.ViewPager2Adapter
 import com.zhidian.application.ui.search.SearchActivity
 import com.zhidian.application.ui.self.NullFragment
 import com.zhidian.application.ui.self.SelfSelectFragment
+import com.zhidian.stockmanager.logic.dao.GroupDao
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        DaoRegister.registerPath(this)
         initBottomNav()
     }
     private lateinit var adapter:ViewPager2Adapter

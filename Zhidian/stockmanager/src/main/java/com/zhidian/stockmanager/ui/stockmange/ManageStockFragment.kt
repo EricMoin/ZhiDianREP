@@ -1,23 +1,29 @@
 package com.zhidian.stockmanager.ui.stockmange
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.Group
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.zhidian.stockmanager.R
 import com.zhidian.stockmanager.logic.data.ManageGroupItem
 import com.zhidian.stockmanager.logic.listener.GroupDialogCallback
+import com.zhidian.stockmanager.logic.utils.StockMoveHelper
 import com.zhidian.stockmanager.ui.adapter.ManageStockAdapter
 import com.zhidian.stockmanager.ui.dialog.GroupDialog
+import java.io.File
+import java.util.Collections
 
-class ManageStockFragment : Fragment() {
+class ManageStockFragment() : Fragment() {
 
     companion object {
         fun newInstance() = ManageStockFragment()
@@ -26,6 +32,7 @@ class ManageStockFragment : Fragment() {
     private lateinit var adapter:ManageStockAdapter
     val viewModel by lazy{ ViewModelProvider(this)[ManageStockViewModel::class.java] }
     private lateinit var groupName:String
+    private lateinit var path:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +47,7 @@ class ManageStockFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        path = activity?.filesDir?.absolutePath+ File.separator
         initStockList()
         initBottomMenu()
 
@@ -59,6 +67,8 @@ class ManageStockFragment : Fragment() {
                 if(item.isSelected){
                     viewModel.stocks.removeAt(position)
                     adapter.notifyItemRemoved(position)
+                    viewModel.saveGroup(ManageGroupItem(groupName,viewModel.stocks))
+                    viewModel.writeGroups()
                 }
             }
         }
@@ -69,8 +79,7 @@ class ManageStockFragment : Fragment() {
                 val item = viewModel.stocks[position]
                 if(item.isSelected){
                     viewModel.removeStockInAllGroups(item.name)
-                    viewModel.stocks.removeAt(position)
-                    adapter.notifyItemRemoved(position)
+                    viewModel.getGroup(groupName)
                 }
             }
         }
@@ -105,16 +114,37 @@ class ManageStockFragment : Fragment() {
         val stockManageRecycler = mainView.findViewById<RecyclerView>(R.id.stockManageRecycler)
         val layoutManager = LinearLayoutManager(activity)
         stockManageRecycler.layoutManager = layoutManager
-        adapter = ManageStockAdapter(this,viewModel.stocks)
+        val callback = StockMoveHelper(
+                object : StockMoveHelper.MyOnItemTouchListener{
+                    override fun onMove(fromPosition: Int, toPosition: Int) {
+                        adapter.notifyItemMoved(fromPosition,toPosition)
+                        Collections.swap(viewModel.stocks,fromPosition,toPosition)
+                        viewModel.saveGroup(ManageGroupItem(groupName,viewModel.stocks))
+                    }
+                    override fun onSwiped(position: Int) {
+
+                    }
+                    override fun onSelectedChanged(
+                        viewHolder: RecyclerView.ViewHolder?,
+                        actionState: Int
+                    ) {
+
+                    }
+                    override fun onClear(viewHolder: RecyclerView.ViewHolder) {
+
+                    }
+                }
+        )
+        adapter = ManageStockAdapter(this,callback,viewModel.stocks)
+        val helper = ItemTouchHelper(callback)
+        helper.attachToRecyclerView(stockManageRecycler)
         stockManageRecycler.adapter = adapter
         viewModel.stocksLiveData.observe(
             viewLifecycleOwner, Observer {
                 result ->
-                if(result.isNotEmpty()){
-                    viewModel.stocks.clear()
-                    viewModel.stocks.addAll(result)
-                    adapter.notifyDataSetChanged()
-                }
+                viewModel.stocks.clear()
+                viewModel.stocks.addAll(result)
+                adapter.notifyDataSetChanged()
             }
         )
         viewModel.getGroup(groupName)

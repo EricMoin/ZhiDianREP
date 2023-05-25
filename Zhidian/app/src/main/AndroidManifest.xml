@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Zhidian"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:replace="android:name"
+        >
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="false" />

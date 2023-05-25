@@ -18,7 +18,7 @@ package com.example.stock.card
 
 import android.graphics.Color
 
-class TimeDataItemCard(
+data class TimeDataItemCard(
     val first:String,
     val second:String,
     val third:String,

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.zhidian.application.logic.data.StockItem
 
 object Tools {
     var height = 0
@@ -42,5 +43,17 @@ object Tools {
         }
         height = view.measuredHeight
         Log.d("Tools","view 高度： $height")
+    }
+    fun sortByPrice(list:ArrayList<StockItem>,way:Int){
+        list.sortWith(
+            compareBy { it.newestPrice.toFloat() }
+        )
+        if(way==1) list.reverse()
+    }
+    fun sortByChg(list:ArrayList<StockItem>,way:Int){
+        list.sortWith(
+            compareBy { it.range.toFloat() }
+        )
+        if(way==1) list.reverse()
     }
 }

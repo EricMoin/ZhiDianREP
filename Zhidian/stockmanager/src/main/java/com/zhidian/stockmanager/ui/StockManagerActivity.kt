@@ -8,11 +8,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.zhidian.stockmanager.ui.groupmanage.ManageGroupFragment
 import com.zhidian.stockmanager.R
+import com.zhidian.stockmanager.logic.utils.Tools
+import java.io.File
 
 class StockManagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stock_manager)
+        Tools.path = filesDir.absolutePath+ File.separator
         initTitle()
     }
     private fun initTitle() {

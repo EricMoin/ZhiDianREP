@@ -19,12 +19,15 @@ package com.example.analyst
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.analyst.fragment.AnalyseFragment
+import com.example.analyst.util.Tools
+import java.io.File
 
 class AnalyseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_analyse)
+        Tools.path = filesDir.absolutePath+File.separator
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, AnalyseFragment.newInstance())

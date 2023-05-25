@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/priceText"
                 android:text="306.80"
                 android:textSize="40sp"
                 android:textColor="#21A538"
@@ -40,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/chgText"
                 android:text="-14.0"
                 android:textSize="20sp"
                 android:textColor="#21A538"
@@ -49,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/chgRatioText"
                 android:text="-4.36%"
                 android:textSize="20sp"
                 android:textColor="#21A538"
@@ -57,13 +60,23 @@
                 android:layout_marginStart="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <ImageView
-                android:src="@drawable/group_label_pic"
-                android:layout_marginStart="12dp"
+            <View
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/stockIconText"
+                android:text=" 创 "
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="#02A7F0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_gravity="end|bottom"
-                android:layout_marginBottom="10dp"
-                android:layout_width="100dp"
-                android:layout_height="20dp"/>
+                android:padding="1dp"
+                />
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stockDataRecyclerView"

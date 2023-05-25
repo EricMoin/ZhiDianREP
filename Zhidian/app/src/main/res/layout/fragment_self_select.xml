@@ -17,6 +17,7 @@
             android:layout_height="wrap_content">
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/selfTabLayout"
+                app:tabMode="auto"
                 app:tabIndicator="@drawable/tab_indicator"
                 app:tabIndicatorColor="#F88C3A"
                 app:tabIndicatorHeight="5dp"
@@ -32,7 +33,6 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"/>
         </LinearLayout>
-        <include layout="@layout/self_select_sub_title"/>
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/selfViewPager"
             android:layout_weight="1"

@@ -48,7 +48,7 @@ class CombineChartUtils(val context: Context, val chart: CombinedChart) {
      * 初始化Chart
      */
     private val count = 12
-    public fun initSettings() {
+    fun initSettings() {
         //不显示描述内容
         chart.description.isEnabled = false
         chart.setBackgroundColor(Color.WHITE)

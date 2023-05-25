@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:padding="1dp"
+        app:tabMode="auto"
         app:tabRippleColor="@android:color/transparent"
         app:tabIndicator="@drawable/tab_indicator"
         app:tabSelectedTextColor="@color/black"

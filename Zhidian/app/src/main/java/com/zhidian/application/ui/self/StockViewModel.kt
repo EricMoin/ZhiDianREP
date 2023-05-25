@@ -9,6 +9,7 @@ class StockViewModel : ViewModel() {
     private val _stockLiveData = MutableLiveData< ArrayList<StockItem> >()
     val stockLiveData get() = _stockLiveData
     val stockList = ArrayList<StockItem>()
+    fun loadData(path:String) = StockRepository.loadData(path)
     fun refreshStockList():ArrayList<StockItem>{
         val list = StockRepository.getStockList()
         stockList.clear()

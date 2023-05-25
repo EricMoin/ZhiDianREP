@@ -6,6 +6,12 @@ import com.zhidian.stockmanager.logic.data.ManageStockItem
 
 object GroupRepository {
     fun getGroup(name:String) = GroupDao.getGroup(name)
+    fun setLocalPath(str:String)  = GroupDao.setLocalPath(str)
+    fun loadGroups() = GroupDao.loadGroups()
+    fun loadGroups(path:String) = GroupDao.loadGroups(path)
+    fun updateGroup(position:Int,group:ManageGroupItem) = GroupDao.updateGroup(position,group)
+    fun removeGroup(position:Int)  = GroupDao.removeGroup(position)
+    fun writeGroups() = GroupDao.writeGroups()
     fun updateGroups(groups:List<ManageGroupItem>) = GroupDao.updateGroups(groups)
     fun getGroupList() = GroupDao.getGroupList()
     fun getDefaultList() = GroupDao.getDefaultList()

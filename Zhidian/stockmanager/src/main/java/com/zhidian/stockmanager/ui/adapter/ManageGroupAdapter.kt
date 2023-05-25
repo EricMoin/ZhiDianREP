@@ -11,9 +11,11 @@ import com.zhidian.stockmanager.R
 import com.zhidian.stockmanager.logic.GroupRepository
 import com.zhidian.stockmanager.logic.data.ManageGroupItem
 import com.zhidian.stockmanager.logic.listener.GroupListener
+import com.zhidian.stockmanager.logic.utils.StockMoveHelper
 import com.zhidian.stockmanager.ui.groupmanage.ManageGroupFragment
+import java.io.File
 
-class ManageGroupAdapter(private val fragment:ManageGroupFragment,private val groupList:List<ManageGroupItem>): RecyclerView.Adapter<ManageGroupAdapter.ViewHolder>(){
+class ManageGroupAdapter(private val fragment:ManageGroupFragment, private val callback: StockMoveHelper, private val groupList:List<ManageGroupItem>): RecyclerView.Adapter<ManageGroupAdapter.ViewHolder>(){
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val groupDelete = view.findViewById<ImageView>(R.id.groupDelete)
         val groupName = view.findViewById<TextView>(R.id.groupName)
@@ -25,24 +27,33 @@ class ManageGroupAdapter(private val fragment:ManageGroupFragment,private val gr
         val holder = ViewHolder(view)
         holder.groupDelete.setOnClickListener {
             val position = holder.adapterPosition
-            Log.d("Adapter","position is $position")
-            fragment.viewModel.deleteGroup(position)
-            notifyItemRemoved(position)
-            fragment.viewModel.updateGroups(fragment.viewModel.groups)
+            fragment.viewModel.removeGroup(position)
+            fragment.viewModel.writeGroups()
+            fragment.viewModel.getGroupList()
         }
         holder.groupEdit.setOnClickListener {
             val position = holder.adapterPosition
-            Log.d("Adapter","position is $position")
             fragment.dialog.setGroupListener(
                 object : GroupListener {
                     override fun setGroup(groupName: String) {
                         fragment.viewModel.groups[position].groupName = groupName
+                        fragment.viewModel.updateGroup(position,fragment.viewModel.groups[position])
+                        fragment.viewModel.writeGroups()
                         notifyItemChanged(position)
-                        fragment.viewModel.updateGroups(fragment.viewModel.groups)
                     }
                 }
             )
             fragment.dialog.show()
+        }
+        holder.groupSort.setOnLongClickListener {
+            callback.setIsLongPressDragEnabled(true)
+            //加入短按动作，取消可以长按排序的功能
+            false
+        }
+        holder.groupSort.setOnClickListener {
+            callback.setIsLongPressDragEnabled(false)
+            //拦截点击，此处结束不穿透
+            true
         }
         return holder
     }
@@ -55,6 +66,7 @@ class ManageGroupAdapter(private val fragment:ManageGroupFragment,private val gr
             if(item.groupName == default.groupName){
                 holder.groupEdit.visibility = INVISIBLE
                 holder.groupDelete.visibility = INVISIBLE
+                holder.groupSort.visibility = INVISIBLE
             }
         }
     }

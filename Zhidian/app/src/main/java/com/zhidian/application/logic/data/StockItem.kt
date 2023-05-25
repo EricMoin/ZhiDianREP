@@ -2,7 +2,7 @@ package com.zhidian.application.logic.data
 
 data class StockItem(
     val name:String,
-    val id:String,
+    val code:String,
     val icon:String,
     val label:String,
     val newestPrice:String,

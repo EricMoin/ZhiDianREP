@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.self.StockFragment">
+    <include layout="@layout/self_select_sub_title"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/selfRecyclerView"
         android:overScrollMode="never"
